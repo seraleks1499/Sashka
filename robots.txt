@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /control/
+Disallow: /logs/
+Disallow: /trust/
+Dis@110w: L3Nhc2hrYXNvc2FsL3JlYWRtZS50eHQ=
+Disallow: /trust/
+
+# you are not supposed to be here
+# but since you are…
+
+# if this file exists,
+# then logging was never disabled

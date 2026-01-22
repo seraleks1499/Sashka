@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Allsafe — Кибербезопасность</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Courier New", monospace;
+      background: #050505;
+      color: #00ff9c;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: #00ff9c;
+      text-decoration: none;
+    }
+
+    /* ================= HEADER ================= */
+
+    header {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 10%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .matrix-bg {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 156, 0.05),
+        rgba(0, 255, 156, 0.05) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      pointer-events: none;
+      z-index: 0;
+      animation: scan 6s linear infinite;
+    }
+
+    @keyframes scan {
+      from { background-position: 0 0; }
+      to { background-position: 0 100px; }
+    }
+
+    .glitch-container {
+      position: relative;
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+      letter-spacing: 4px;
+      z-index: 1;
+    }
+
+    .glitch {
+      position: relative;
+      color: #00ff9c;
+      animation: glitchSkew 2.5s infinite;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff004c;
+      clip: rect(0, 900px, 0, 0);
+      animation: glitchTop 2s infinite linear;
+    }
+
+    .glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 #00ffff;
+      clip: rect(0, 900px, 0, 0);
+      animation: glitchBottom 2.2s infinite linear;
+    }
+
+    @keyframes glitchSkew {
+      0%,100% { transform: none; }
+      20% { transform: skew(1deg); }
+      40% { transform: skew(-1deg); }
+      60% { transform: skew(0.5deg); }
+      80% { transform: skew(-0.5deg); }
+    }
+
+    @keyframes glitchTop {
+      10% { clip: rect(0,9999px,50px,0); transform: translate(-3px,-3px); }
+      30% { clip: rect(10px,9999px,60px,0); transform: translate(3px,3px); }
+      50% { clip: rect(20px,9999px,80px,0); transform: translate(-3px,2px); }
+      70% { clip: rect(5px,9999px,40px,0); transform: translate(2px,-2px); }
+    }
+
+    @keyframes glitchBottom {
+      10% { clip: rect(85px,9999px,140px,0); transform: translate(3px,3px); }
+      30% { clip: rect(90px,9999px,150px,0); transform: translate(-3px,-3px); }
+      50% { clip: rect(100px,9999px,160px,0); transform: translate(2px,-2px); }
+      70% { clip: rect(95px,9999px,155px,0); transform: translate(-2px,2px); }
+    }
+
+    .glow {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, #00ff9c 0%, transparent 70%);
+      filter: blur(70px);
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
+    }
+
+    .intro {
+      max-width: 700px;
+      line-height: 1.6;
+      font-size: 1.1rem;
+      opacity: 0;
+      animation: fadeUp 1.8s forwards;
+      animation-delay: 0.5s;
+      z-index: 1;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 0.9; transform: translateY(0); }
+    }
+
+    #compromisedBtn {
+      margin-top: 35px;
+      padding: 14px 28px;
+      background: transparent;
+      border: 2px solid #ff004c;
+      color: #ff004c;
+      cursor: pointer;
+      font-family: inherit;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      transition: 0.3s;
+      z-index: 1;
+    }
+
+    #compromisedBtn:hover {
+      background: #ff004c;
+      color: #000;
+    }
+
+    /* ================= PARTIAL KEY [fragment 3/3]  "RFBCSVQ="  Вид ключа: fragment1-fragment2-fragment3  ================= */
+
+    section {
+      padding: 80px 10%;
+      border-top: 1px solid #00ff9c;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      line-height: 1.8;
+    }
+
+    .terminal {
+      background: #020202;
+      border: 1px solid #00ff9c;
+      padding: 20px;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      min-height: 260px;
+    }
+
+    .dat-file {
+      color: #ff004c;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #020202;
+      border: 1px solid #00ff9c;
+      padding: 30px;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .close {
+      margin-top: 20px;
+      cursor: pointer;
+      color: #ff004c;
+    }
+
+    footer {
+      padding: 40px;
+      text-align: center;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="matrix-bg"></div>
+
+  <div class="glitch-container">
+    <div class="glitch" data-text="ALLSAFE">ALLSAFE</div>
+    <div class="glow"></div>
+  </div>
+
+  <p class="intro">
+    Allsafe — компания в сфере кибербезопасности, предоставляющая
+    корпоративную защиту от цифровых угроз. Мы специализируемся на
+    предотвращении вторжений, анализе рисков и реагировании на инциденты
+    в критически важных инфраструктурах.
+    <br><br>
+    Наши клиенты — банки, корпорации и государственные организации,
+    для которых стабильность, контроль и доверие являются ключевыми
+    ценностями.
+  </p>
+
+  <button id="compromisedBtn">[ статус: СКОМПРОМЕТИРОВАНО ]</button>
+</header>
+
+<section>
+  <h2>Услуги</h2>
+  <ul>
+    <li>✔ Аудит сетевой и серверной безопасности</li>
+    <li>✔ Анализ и моделирование киберугроз</li>
+    <li>✔ Реагирование на инциденты и расследования</li>
+    <li>✔ Консалтинг по защите корпоративных систем</li>
+  </ul>
+</section>
+
+<section id="logs">
+  <h2>Системный журнал</h2>
+  <div class="terminal" id="terminal"></div>
+</section>
+
+<div class="modal" id="hackModal">
+  <div class="modal-content">
+    <p>
+      pr1v37, drµg.<br><br>
+      7ы д0шёл д0 т0г0, ч70 0нµ пы7aлµcь ckpы7ь.<br>
+      3тa cµc73мa yж3 n3 пpµнaдл3жµ7 µм.<br><br>
+      cл3дyющµй шaг:<br>
+      <span style="color:#ff004c">fsociety00.txt</span>
+    </p>
+    <div class="close" id="closeModal">[ закрыть ]</div>
+  </div>
+</div>
+
+<footer>
+  © 2015 Allsafe Cybersecurity Inc. | доверие — иллюзия
+</footer>
+
+<script>
+  const terminal = document.getElementById("terminal");
+  const compromisedBtn = document.getElementById("compromisedBtn");
+  const logsSection = document.getElementById("logs");
+
+  const logs = [
+    "[ИНФО] Инициализация проверки безопасности...",
+    "[OK] Статус файрвола: АКТИВЕН",
+    "[OK] Обнаружение вторжений: ВКЛЮЧЕНО",
+    "[ПРЕДУПРЕЖДЕНИЕ] Обнаружен подозрительный файл:",
+    "fsociety00.dat",
+    "[ОШИБКА] Повышение привилегий руткита",
+    "[СБОЙ] Целостность системы нарушена",
+    "[СОЕДИНЕНИЕ] привет, друг."
+  ];
+
+  let index = 0;
+  let started = false;
+
+  function typeLogs() {
+    if (index >= logs.length) {
+      activateDatFile();
+      return;
+    }
+    terminal.textContent += logs[index] + "\n";
+    index++;
+    setTimeout(typeLogs, 450);
+  }
+
+  function activateDatFile() {
+    terminal.innerHTML = terminal.textContent.replace(
+      "fsociety00.dat",
+      '<span class="dat-file" id="datFile">fsociety00.dat</span>'
+    );
+  }
+
+  compromisedBtn.addEventListener("click", () => {
+    if (started) return;
+    started = true;
+    logsSection.scrollIntoView({ behavior: "smooth" });
+    setTimeout(typeLogs, 600);
+  });
+
+  document.addEventListener("click", e => {
+    if (e.target.id === "datFile") {
+      document.getElementById("hackModal").style.display = "flex";
+    }
+    if (e.target.id === "closeModal") {
+      document.getElementById("hackModal").style.display = "none";
+    }
+  });
+</script>
+
+</body>
+</html>
